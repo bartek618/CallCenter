@@ -45,15 +45,13 @@ namespace CallCenter
 
         public MainWindow()
         {
+            this.Closed += MainWindow_Closed;
+
             Agent.MinCallTimeInSec = 0;
             Agent.MaxCallTimeInSec = 10;
             Agent.OnCallEnded += Agent_OnCallEnded;
             Agent tom = new Agent("Tom");
             Agents.Add(tom);
-            Agent bob = new Agent("Bob");
-            Agents.Add(bob);
-            Agent pete = new Agent("Pete");
-            Agents.Add(pete);
 
             _callsGenerator = new CallsGenerator(0, 60);
             _callsGenerator.OnCallGenerated += CallsGenerator_OnCallGenerated;
@@ -65,9 +63,9 @@ namespace CallCenter
 
             Task.Run(() =>
             {
-                Thread.Sleep(10);
                 while (true)
                 {
+                    Thread.Sleep(100);
                     if (_calls.Count != 0 && Agents.Count != 0)
                     {
                         foreach (Agent agent in Agents)
@@ -84,6 +82,8 @@ namespace CallCenter
                 }
             });
         }
+
+
         private void CallsGenerator_OnCallGenerated(Call call)
         {
             _calls.Enqueue(call);
@@ -108,9 +108,19 @@ namespace CallCenter
         }
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            Agents.Remove(AgentsListView.SelectedItem as Agent);
+            Agent agentToDelete = AgentsListView.SelectedItem as Agent;
+            Agents.Remove(agentToDelete);
+            agentToDelete.Dispose();
 
             NotifyPropertyChanged(nameof(Agents));
+        }
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            _callsGenerator.Dispose();
+            foreach (Agent agent in Agents)
+            {
+                agent.Dispose();
+            }
         }
         public void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
