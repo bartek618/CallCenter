@@ -20,7 +20,8 @@ namespace CallCenter
     /// </summary>
     public partial class AddAgentWindow : Window
     {
-        private MainWindow _mainWindow;
+        public event Action<Agent> OnAgentAdded;
+        private readonly MainWindow _mainWindow;
         public AddAgentWindow(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
@@ -38,6 +39,8 @@ namespace CallCenter
                 Agent newAgent = new Agent(NameTextBox.Text);
                 _mainWindow.Agents.Add(newAgent);
                 _mainWindow.NotifyPropertyChanged(nameof(_mainWindow.Agents));
+
+                OnAgentAdded(newAgent);
             }
             else
             {

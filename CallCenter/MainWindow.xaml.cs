@@ -114,7 +114,12 @@ namespace CallCenter
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             AddAgentWindow addAgentWindow = new AddAgentWindow(this);
+            addAgentWindow.OnAgentAdded += AddAgentWindow_OnAgentAdded;
             addAgentWindow.Show();
+        }
+        private void AddAgentWindow_OnAgentAdded(Agent agent)
+        {
+            UpdateConsoleString($"Agent {agent.Name} added");
         }
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
@@ -123,6 +128,8 @@ namespace CallCenter
                 Agents.Remove(agentToDelete);
                 agentToDelete.Dispose();
                 NotifyPropertyChanged(nameof(Agents));
+
+                UpdateConsoleString($"Agent {agentToDelete.Name} deleted");
             }
         }
         private void MainWindow_Closed(object sender, EventArgs e)
