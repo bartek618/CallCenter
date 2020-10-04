@@ -39,6 +39,7 @@ namespace CallCenter
                 NotifyPropertyChanged();
             }
         }
+        private bool stop;
         #endregion
         #region Events
         public event PropertyChangedEventHandler PropertyChanged; 
@@ -54,21 +55,21 @@ namespace CallCenter
             Agent tom = new Agent("Tom");
             Agents.Add(tom);
 
-            _callsGenerator.OnCallGenerated += CallsGenerator_OnCallGenerated;
             _callsGenerator = new CallsGenerator(0, 30);
+            _callsGenerator.OnCallGenerated += CallsGenerator_OnCallGenerated;
             _callsGenerator.StartGeneratingContinously();
 
             InitializeComponent();
 
             DataContext = this;
 
-            RunCallDispatcherTask();
+            RunCallsDispatcherTask();
         }
-        private void RunCallDispatcherTask()
+        private void RunCallsDispatcherTask()
         {
             Task.Run(() =>
             {
-                while (true)
+                while (!stop)
                 {
                     Thread.Sleep(100);
                     if (_calls.Count != 0 && Agents.Count != 0)
@@ -121,6 +122,7 @@ namespace CallCenter
         }
         private void MainWindow_Closed(object sender, EventArgs e)
         {
+            stop = true;
             _callsGenerator.Dispose();
             foreach (Agent agent in Agents)
             {
