@@ -14,7 +14,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <ScrollViewer Grid.Column="1">
-            <TextBlock x:Name="ConsoleTextBlock" />
+            <TextBlock x:Name="ConsoleTextBlock" Text="{Binding ConsoleString}"/>
         </ScrollViewer>
         <StackPanel Grid.Column="0">
             <ListView x:Name="AgentsListView" ItemsSource="{Binding Agents}">

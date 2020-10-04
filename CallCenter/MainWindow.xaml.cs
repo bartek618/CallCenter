@@ -26,6 +26,17 @@ namespace CallCenter
     {
         private CallsGenerator _callsGenerator;
         private Queue<Call> _calls = new Queue<Call>();
+        private string _consoleString = "";
+
+        public string ConsoleString
+        {
+            get { return _consoleString; }
+            private set
+            {
+                _consoleString = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -58,7 +69,7 @@ namespace CallCenter
 
         private void Agent_OnCallEnded(Agent agent, Call call)
         {
-            InvokeWriteToConsoleOnUI($"{agent.Name} ended call {call.Id}. Duration: {call.DurationInSec}s.");
+            UpdateConsoleString($"{agent.Name} ended call {call.Id}. Duration: {call.DurationInSec}s.");
 
             if (Agents.Contains(agent))
             {
@@ -76,7 +87,7 @@ namespace CallCenter
 
         private void CallsGenerator_OnCallGenerated(Call call)
         {
-            InvokeWriteToConsoleOnUI($"Generated call {call.Id}. Calls waiting: {_calls.Count + 1}");
+            UpdateConsoleString($"Generated call {call.Id}. Calls waiting: {_calls.Count + 1}");
 
             bool callTaken = false;
             foreach (Agent agent in Agents)
@@ -98,17 +109,12 @@ namespace CallCenter
         private void RequestAnswer(Agent agent, Call call)
         {
             agent.TakeCall(call);
-            InvokeWriteToConsoleOnUI($"{agent.Name} answered call {call.Id}");
+            UpdateConsoleString($"{agent.Name} answered call {call.Id}");
         }
 
-        private void InvokeWriteToConsoleOnUI(string message)
+        private void UpdateConsoleString(string message)
         {
-            Dispatcher.Invoke(new Action<string>(WriteToConsole), message);
-        }
-
-        private void WriteToConsole(string message)
-        {
-            ConsoleTextBlock.Text = ConsoleTextBlock.Text.Insert(0, message + Environment.NewLine);
+            ConsoleString = ConsoleString.Insert(0, message + Environment.NewLine);
         }
 
         private void GenerateCallButton_Click(object sender, RoutedEventArgs e)
