@@ -24,7 +24,9 @@ namespace CallCenter
         public AddAgentWindow(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
+
             InitializeComponent();
+
             NameTextBox.Focus();
         }
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
@@ -32,6 +34,7 @@ namespace CallCenter
             if (NameTextBox.Text != "")
             {
                 Close();
+
                 Agent newAgent = new Agent(NameTextBox.Text);
                 _mainWindow.Agents.Add(newAgent);
                 _mainWindow.NotifyPropertyChanged(nameof(_mainWindow.Agents));
@@ -41,7 +44,6 @@ namespace CallCenter
                 MessageBox.Show("Name can not be empty.");
             }
         }
-
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Close();

@@ -38,6 +38,7 @@ namespace CallCenterClassLibrary
         {
             Name = name;
 
+            //Initialize timer.
             _timer = new System.Timers.Timer
             {
                 AutoReset = false
@@ -53,15 +54,20 @@ namespace CallCenterClassLibrary
             _stopwatch.Stop();
             _call.DurationInSec = (int)(_stopwatch.ElapsedMilliseconds / 1000);
             _stopwatch.Reset();
+
+            //Raise event.
             OnCallEnded(this, _call);
         }
         public void TakeCall(Call call)
         {
             Busy = true;
+
             _call = call;
 
+            //Start Timer.
             _timer.Interval = RandomGenerator.GetRandom(MinCallTimeInSec * 1000, MaxCallTimeInSec * 1000);
             _timer.Start();
+            //Start stopwatch.
             _stopwatch.Start();
         }
         public void Dispose()

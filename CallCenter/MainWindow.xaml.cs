@@ -49,12 +49,14 @@ namespace CallCenter
         {
             this.Closed += MainWindow_Closed;
 
+            //Initialize Agents.
             Agent.OnCallEnded += Agent_OnCallEnded;
             Agent.MinCallTimeInSec = 0;
             Agent.MaxCallTimeInSec = 30;
             Agent tom = new Agent("Tom");
             Agents.Add(tom);
 
+            //Initialize calls generator.
             _callsGenerator = new CallsGenerator(0, 30);
             _callsGenerator.OnCallGenerated += CallsGenerator_OnCallGenerated;
             _callsGenerator.StartGeneratingContinously();
@@ -72,12 +74,16 @@ namespace CallCenter
                 while (!stop)
                 {
                     Thread.Sleep(100);
+
+                    //if there are calls and agents available
                     if (_calls.Count != 0 && Agents.Count != 0)
                     {
+                        //Iterate through agents.
                         foreach (Agent agent in Agents)
                         {
                             if (agent.Busy == false)
                             {
+                                //Take call.
                                 Call currentCall = _calls.Dequeue();
                                 agent.TakeCall(currentCall);
                                 UpdateConsoleString($"{agent.Name} answered call {currentCall.Id}");
@@ -121,7 +127,10 @@ namespace CallCenter
         }
         private void MainWindow_Closed(object sender, EventArgs e)
         {
+            //Stop calls dispatcher task.
             stop = true;
+
+            //Dispose.
             _callsGenerator.Dispose();
             foreach (Agent agent in Agents)
             {

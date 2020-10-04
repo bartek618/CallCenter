@@ -22,7 +22,7 @@ namespace CallCenterClassLibrary
             _minInterval = minCallsIntervalInSec;
             _maxInterval = maxCallsIntervalInSec;
 
-
+            //Initialize timer.
             _timer = new System.Timers.Timer(RandomGenerator.GetRandom(_minInterval * 1000, _maxInterval * 1000))
             {
                 AutoReset = true
