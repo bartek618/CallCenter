@@ -26,8 +26,8 @@ namespace CallCenter
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region Fields and properties
-        private CallsGenerator _callsGenerator;
-        private Queue<Call> _calls = new Queue<Call>();
+        private readonly CallsGenerator _callsGenerator;
+        private readonly Queue<Call> _calls = new Queue<Call>();
         public ObservableCollection<Agent> Agents { get; private set; } = new ObservableCollection<Agent>();
         private string _consoleString = "";
         public string ConsoleString
@@ -112,8 +112,7 @@ namespace CallCenter
         }
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            Agent agentToDelete = AgentsListView.SelectedItem as Agent;
-            if (agentToDelete != null)
+            if (AgentsListView.SelectedItem is Agent agentToDelete)
             {
                 Agents.Remove(agentToDelete);
                 agentToDelete.Dispose();

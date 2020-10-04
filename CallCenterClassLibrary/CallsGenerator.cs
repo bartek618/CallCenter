@@ -9,9 +9,9 @@ namespace CallCenterClassLibrary
     public class CallsGenerator: IDisposable
     {
         #region Fields and properties
-        private System.Timers.Timer _timer;
-        private int _minInterval;
-        private int _maxInterval;
+        private readonly System.Timers.Timer _timer;
+        private readonly int _minInterval;
+        private readonly int _maxInterval;
         #endregion
         #region Events
         public event Action<Call> OnCallGenerated;
@@ -23,9 +23,11 @@ namespace CallCenterClassLibrary
             _maxInterval = maxCallsIntervalInSec;
 
 
-            _timer = new System.Timers.Timer(RandomGenerator.GetRandom(_minInterval * 1000, _maxInterval * 1000));
-            _timer.AutoReset = true;
-            _timer.Elapsed += _timer_Elapsed;
+            _timer = new System.Timers.Timer(RandomGenerator.GetRandom(_minInterval * 1000, _maxInterval * 1000))
+            {
+                AutoReset = true
+            };
+            _timer.Elapsed += Timer_Elapsed;
         }
         public void StartGeneratingContinously()
         {
@@ -39,7 +41,7 @@ namespace CallCenterClassLibrary
         {
             OnCallGenerated(new Call(Guid.NewGuid().ToString()));
         }
-        private void _timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             GenerateCall();
             _timer.Interval = RandomGenerator.GetRandom(_minInterval * 1000, _maxInterval * 1000);

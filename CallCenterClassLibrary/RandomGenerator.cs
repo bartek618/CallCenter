@@ -8,7 +8,7 @@ namespace CallCenterClassLibrary
 {
     public static class RandomGenerator
     {
-        private static Random _random = new Random();
+        private static readonly Random _random = new Random();
         public static int GetRandom(int minValue, int maxValue)
         {
             return _random.Next(minValue, maxValue);

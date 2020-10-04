@@ -16,8 +16,8 @@ namespace CallCenterClassLibrary
         private Call _call;
         public static int MinCallTimeInSec { get; set; }
         public static int MaxCallTimeInSec { get; set; }
-        private System.Timers.Timer _timer;
-        private Stopwatch _stopwatch;
+        private readonly System.Timers.Timer _timer;
+        private readonly Stopwatch _stopwatch;
         private bool _busy;
         public bool Busy
         {
@@ -38,13 +38,15 @@ namespace CallCenterClassLibrary
         {
             Name = name;
 
-            _timer = new System.Timers.Timer();
-            _timer.AutoReset = false;
-            _timer.Elapsed += _timer_Elapsed;
+            _timer = new System.Timers.Timer
+            {
+                AutoReset = false
+            };
+            _timer.Elapsed += Timer_Elapsed;
 
             _stopwatch = new Stopwatch();
         }
-        private void _timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Busy = false;
 
