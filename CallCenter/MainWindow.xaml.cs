@@ -109,10 +109,12 @@ namespace CallCenter
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             Agent agentToDelete = AgentsListView.SelectedItem as Agent;
-            Agents.Remove(agentToDelete);
-            agentToDelete.Dispose();
-
-            NotifyPropertyChanged(nameof(Agents));
+            if (agentToDelete != null)
+            {
+                Agents.Remove(agentToDelete);
+                agentToDelete.Dispose();
+                NotifyPropertyChanged(nameof(Agents));
+            }
         }
         private void MainWindow_Closed(object sender, EventArgs e)
         {

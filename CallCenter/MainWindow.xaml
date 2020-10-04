@@ -5,22 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CallCenter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        MinHeight="450" MinWidth="800"
+        WindowStartupLocation="CenterScreen">
 
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer Grid.Column="1">
+        <ScrollViewer Grid.Column="2">
             <TextBlock x:Name="ConsoleTextBlock" Text="{Binding ConsoleString}"/>
         </ScrollViewer>
         <StackPanel Grid.Column="0">
-            <ListView x:Name="AgentsListView" ItemsSource="{Binding Agents}">
+            <ListView x:Name="AgentsListView" ItemsSource="{Binding Agents}" FontSize="16">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="140"/>
                         <GridViewColumn Header="Busy" DisplayMemberBinding="{Binding Busy}"/>
                     </GridView>
                 </ListView.View>
@@ -30,13 +33,13 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Click="AddButton_Click"/>
-                <Button Grid.Column="1" Click="DeleteButton_Click"/>
+                <Button Grid.Column="0" Click="AddButton_Click">Add</Button>
+                <Button Grid.Column="1" Click="DeleteButton_Click">Delete</Button>
             </Grid>
-            
+
         </StackPanel>
         <StackPanel VerticalAlignment="Bottom">
-            <Button Click="GenerateCallButton_Click" Height="50"/>
+            <Button Click="GenerateCallButton_Click" Height="50">Generate call</Button>
         </StackPanel>
     </Grid>
 </Window>

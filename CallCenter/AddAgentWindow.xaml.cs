@@ -27,13 +27,24 @@ namespace CallCenter
             InitializeComponent();
             NameTextBox.Focus();
         }
-
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            if (NameTextBox.Text != "")
+            {
+                Close();
+                Agent newAgent = new Agent(NameTextBox.Text);
+                _mainWindow.Agents.Add(newAgent);
+                _mainWindow.NotifyPropertyChanged(nameof(_mainWindow.Agents));
+            }
+            else
+            {
+                MessageBox.Show("Name can not be empty.");
+            }
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
             Close();
-            Agent newAgent = new Agent(NameTextBox.Text);
-            _mainWindow.Agents.Add(newAgent);
-            _mainWindow.NotifyPropertyChanged(nameof(_mainWindow.Agents));
         }
     }
 }
