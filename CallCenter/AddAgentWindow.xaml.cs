@@ -38,7 +38,6 @@ namespace CallCenter
 
                 Agent newAgent = new Agent(NameTextBox.Text);
                 _mainWindow.Agents.Add(newAgent);
-                _mainWindow.NotifyPropertyChanged(nameof(_mainWindow.Agents));
 
                 OnAgentAdded(newAgent);
             }

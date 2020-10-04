@@ -28,7 +28,16 @@ namespace CallCenter
         #region Fields and properties
         private readonly CallsGenerator _callsGenerator;
         private readonly Queue<Call> _calls = new Queue<Call>();
-        public ObservableCollection<Agent> Agents { get; private set; } = new ObservableCollection<Agent>();
+        private ObservableCollection<Agent> agents = new ObservableCollection<Agent>();
+        public ObservableCollection<Agent> Agents
+        {
+            get { return agents; }
+            set
+            {
+                agents = value;
+                NotifyPropertyChanged();
+            }
+        }
         private string _consoleString = "";
         public string ConsoleString
         {
@@ -42,7 +51,7 @@ namespace CallCenter
         private bool stop;
         #endregion
         #region Events
-        public event PropertyChangedEventHandler PropertyChanged; 
+        public event PropertyChangedEventHandler PropertyChanged;
         #endregion
         #region Methods
         public MainWindow()
@@ -144,10 +153,10 @@ namespace CallCenter
                 agent.Dispose();
             }
         }
-        public void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        } 
+        }
         #endregion
     }
 }

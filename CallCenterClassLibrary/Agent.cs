@@ -74,7 +74,7 @@ namespace CallCenterClassLibrary
         {
             _timer.Dispose();
         }
-        public void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         } 
