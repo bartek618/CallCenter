@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,6 +65,7 @@ namespace CallCenter
 
             Task.Run(() =>
             {
+                Thread.Sleep(10);
                 while (true)
                 {
                     if (_calls.Count != 0 && Agents.Count != 0)
