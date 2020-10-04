@@ -20,7 +20,8 @@
             <ListView x:Name="AgentsListView" ItemsSource="{Binding Agents}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="190"/>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Busy" DisplayMemberBinding="{Binding Busy}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

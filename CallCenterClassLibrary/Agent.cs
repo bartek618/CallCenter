@@ -1,16 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CallCenterClassLibrary
 {
-    public class Agent: IDisposable
+    public class Agent: IDisposable, INotifyPropertyChanged
     {
-        public bool Busy { get; private set; }
+        private bool _busy;
+
+        public bool Busy
+        {
+            get { return _busy; }
+            set { _busy = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public static event Action<Agent, Call> OnCallEnded;
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private System.Timers.Timer _timer;
         private Stopwatch _stopwatch;
         public string Name { get; private set; }
@@ -51,5 +64,10 @@ namespace CallCenterClassLibrary
         {
             _timer.Dispose();
         }
+        public void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }
