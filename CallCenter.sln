@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallCenter", "CallCenter\CallCenter.csproj", "{50E3538E-B8C6-45BB-9808-99D38B4238CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallCenterClassLibrary", "CallCenterClassLibrary\CallCenterClassLibrary.csproj", "{166E5F77-4BF8-4D7E-8C0B-1A03CA52B329}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50E3538E-B8C6-45BB-9808-99D38B4238CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E3538E-B8C6-45BB-9808-99D38B4238CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50E3538E-B8C6-45BB-9808-99D38B4238CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50E3538E-B8C6-45BB-9808-99D38B4238CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166E5F77-4BF8-4D7E-8C0B-1A03CA52B329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166E5F77-4BF8-4D7E-8C0B-1A03CA52B329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166E5F77-4BF8-4D7E-8C0B-1A03CA52B329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166E5F77-4BF8-4D7E-8C0B-1A03CA52B329}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C6DA713E-0764-47D4-94A0-A4CF22E7D41A}
+	EndGlobalSection
+EndGlobal

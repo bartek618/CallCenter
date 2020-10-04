@@ -1,0 +1,41 @@
+﻿<Window x:Class="CallCenter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CallCenter"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Column="1">
+            <TextBlock x:Name="ConsoleTextBlock" />
+        </ScrollViewer>
+        <StackPanel Grid.Column="0">
+            <ListView x:Name="AgentsListView" ItemsSource="{Binding Agents}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="190"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Grid Height="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Click="AddButton_Click"/>
+                <Button Grid.Column="1" Click="DeleteButton_Click"/>
+            </Grid>
+            
+        </StackPanel>
+        <StackPanel VerticalAlignment="Bottom">
+            <Button Click="GenerateCallButton_Click" Height="50"/>
+        </StackPanel>
+    </Grid>
+</Window>
