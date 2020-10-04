@@ -11,25 +11,29 @@ namespace CallCenterClassLibrary
 {
     public class Agent: IDisposable, INotifyPropertyChanged
     {
-        private bool _busy;
-
-        public bool Busy
-        {
-            get { return _busy; }
-            set { _busy = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public static event Action<Agent, Call> OnCallEnded;
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private System.Timers.Timer _timer;
-        private Stopwatch _stopwatch;
+        #region Fields and properties
         public string Name { get; private set; }
         private Call _call;
         public static int MinCallTimeInSec { get; set; }
         public static int MaxCallTimeInSec { get; set; }
+        private System.Timers.Timer _timer;
+        private Stopwatch _stopwatch;
+        private bool _busy;
+        public bool Busy
+        {
+            get { return _busy; }
+            set
+            {
+                _busy = value;
+                NotifyPropertyChanged();
+            }
+        }
+        #endregion
+        #region Events
+        public static event Action<Agent, Call> OnCallEnded;
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+        #region Methods
         public Agent(string name)
         {
             Name = name;
@@ -49,7 +53,6 @@ namespace CallCenterClassLibrary
             _stopwatch.Reset();
             OnCallEnded(this, _call);
         }
-
         public void TakeCall(Call call)
         {
             Busy = true;
@@ -59,7 +62,6 @@ namespace CallCenterClassLibrary
             _timer.Start();
             _stopwatch.Start();
         }
-
         public void Dispose()
         {
             _timer.Dispose();
@@ -67,7 +69,7 @@ namespace CallCenterClassLibrary
         public void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        } 
+        #endregion
     }
 }

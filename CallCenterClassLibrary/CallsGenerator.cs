@@ -8,11 +8,15 @@ namespace CallCenterClassLibrary
 {
     public class CallsGenerator: IDisposable
     {
+        #region Fields and properties
         private System.Timers.Timer _timer;
         private int _minInterval;
         private int _maxInterval;
-
+        #endregion
+        #region Events
         public event Action<Call> OnCallGenerated;
+        #endregion
+        #region Methods
         public CallsGenerator(int minCallsIntervalInSec, int maxCallsIntervalInSec)
         {
             _minInterval = minCallsIntervalInSec;
@@ -31,18 +35,19 @@ namespace CallCenterClassLibrary
         {
             _timer.Stop();
         }
-        public void Dispose()
+        public void GenerateCall()
         {
-            _timer.Dispose();
+            OnCallGenerated(new Call(Guid.NewGuid().ToString()));
         }
         private void _timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             GenerateCall();
             _timer.Interval = RandomGenerator.GetRandom(_minInterval * 1000, _maxInterval * 1000);
         }
-        public void GenerateCall()
+        public void Dispose()
         {
-            OnCallGenerated(new Call(Guid.NewGuid().ToString()));
-        }
+            _timer.Dispose();
+        } 
+        #endregion
     }
 }

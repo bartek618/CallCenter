@@ -25,10 +25,11 @@ namespace CallCenter
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        #region Fields and properties
         private CallsGenerator _callsGenerator;
         private Queue<Call> _calls = new Queue<Call>();
+        public ObservableCollection<Agent> Agents { get; private set; } = new ObservableCollection<Agent>();
         private string _consoleString = "";
-
         public string ConsoleString
         {
             get { return _consoleString; }
@@ -38,29 +39,33 @@ namespace CallCenter
                 NotifyPropertyChanged();
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public ObservableCollection<Agent> Agents { get; private set; } = new ObservableCollection<Agent>();
-
+        #endregion
+        #region Events
+        public event PropertyChangedEventHandler PropertyChanged; 
+        #endregion
+        #region Methods
         public MainWindow()
         {
             this.Closed += MainWindow_Closed;
 
-            Agent.MinCallTimeInSec = 0;
-            Agent.MaxCallTimeInSec = 10;
             Agent.OnCallEnded += Agent_OnCallEnded;
+            Agent.MinCallTimeInSec = 0;
+            Agent.MaxCallTimeInSec = 30;
             Agent tom = new Agent("Tom");
             Agents.Add(tom);
 
-            _callsGenerator = new CallsGenerator(0, 60);
             _callsGenerator.OnCallGenerated += CallsGenerator_OnCallGenerated;
+            _callsGenerator = new CallsGenerator(0, 30);
             _callsGenerator.StartGeneratingContinously();
 
             InitializeComponent();
 
             DataContext = this;
 
+            RunCallDispatcherTask();
+        }
+        private void RunCallDispatcherTask()
+        {
             Task.Run(() =>
             {
                 while (true)
@@ -82,8 +87,6 @@ namespace CallCenter
                 }
             });
         }
-
-
         private void CallsGenerator_OnCallGenerated(Call call)
         {
             _calls.Enqueue(call);
@@ -127,6 +130,7 @@ namespace CallCenter
         public void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        } 
+        #endregion
     }
 }
