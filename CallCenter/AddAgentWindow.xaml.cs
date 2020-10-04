@@ -33,7 +33,6 @@ namespace CallCenter
             Close();
             Agent newAgent = new Agent(NameTextBox.Text);
             _mainWindow.Agents.Add(newAgent);
-            _mainWindow.DequeueCalls(newAgent);
             _mainWindow.NotifyPropertyChanged(nameof(_mainWindow.Agents));
         }
     }

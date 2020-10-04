@@ -44,7 +44,6 @@ namespace CallCenter
 
         public MainWindow()
         {
-
             Agent.MinCallTimeInSec = 0;
             Agent.MaxCallTimeInSec = 10;
             Agent.OnCallEnded += Agent_OnCallEnded;
@@ -55,84 +54,65 @@ namespace CallCenter
             Agent pete = new Agent("Pete");
             Agents.Add(pete);
 
-            _callsGenerator = new CallsGenerator(0, 10);
+            _callsGenerator = new CallsGenerator(0, 60);
             _callsGenerator.OnCallGenerated += CallsGenerator_OnCallGenerated;
             _callsGenerator.StartGeneratingContinously();
 
             InitializeComponent();
-            DataContext = this;
-        }
-        public void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
+            DataContext = this;
+
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    if (_calls.Count != 0 && Agents.Count != 0)
+                    {
+                        foreach (Agent agent in Agents)
+                        {
+                            if (agent.Busy == false)
+                            {
+                                Call currentCall = _calls.Dequeue();
+                                agent.TakeCall(currentCall);
+                                UpdateConsoleString($"{agent.Name} answered call {currentCall.Id}");
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        private void CallsGenerator_OnCallGenerated(Call call)
+        {
+            _calls.Enqueue(call);
+            UpdateConsoleString($"Generated call {call.Id}. Calls waiting: {_calls.Count}");
+        }
         private void Agent_OnCallEnded(Agent agent, Call call)
         {
             UpdateConsoleString($"{agent.Name} ended call {call.Id}. Duration: {call.DurationInSec}s.");
-
-            if (Agents.Contains(agent))
-            {
-                DequeueCalls(agent);
-            }
         }
-
-        public void DequeueCalls(Agent agent)
-        {
-            if (_calls.Count != 0)
-            {
-                RequestAnswer(agent, _calls.Dequeue());
-            }
-        }
-
-        private void CallsGenerator_OnCallGenerated(Call call)
-        {
-            UpdateConsoleString($"Generated call {call.Id}. Calls waiting: {_calls.Count + 1}");
-
-            bool callTaken = false;
-            foreach (Agent agent in Agents)
-            {
-                if (agent.Busy == false)
-                {
-                    RequestAnswer(agent, call);
-                    callTaken = true;
-                    break;
-                }
-
-            }
-            if (callTaken == false)
-            {
-                _calls.Enqueue(call);
-            }
-        }
-
-        private void RequestAnswer(Agent agent, Call call)
-        {
-            agent.TakeCall(call);
-            UpdateConsoleString($"{agent.Name} answered call {call.Id}");
-        }
-
         private void UpdateConsoleString(string message)
         {
             ConsoleString = ConsoleString.Insert(0, message + Environment.NewLine);
         }
-
         private void GenerateCallButton_Click(object sender, RoutedEventArgs e)
         {
             _callsGenerator.GenerateCall();
         }
-
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             AddAgentWindow addAgentWindow = new AddAgentWindow(this);
             addAgentWindow.Show();
         }
-
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             Agents.Remove(AgentsListView.SelectedItem as Agent);
 
             NotifyPropertyChanged(nameof(Agents));
+        }
+        public void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
