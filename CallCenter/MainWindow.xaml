@@ -19,7 +19,7 @@
         
         <!--Column 0 top-->
         <StackPanel Grid.Column="0">
-            <ListView x:Name="AgentsListView" ItemsSource="{Binding Agents}" FontSize="16">
+            <ListView x:Name="AgentsListView" ItemsSource="{Binding Agents}" FontSize="16" MaxHeight="300">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="140"/>
